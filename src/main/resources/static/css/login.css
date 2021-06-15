@@ -1,0 +1,250 @@
+.carousel_div1{
+    background: url(../images/banner2.jpg) fixed center center;
+}
+.carousel_div2{
+    background: url(../images/banner1.jpg) fixed center center;
+}
+.carousel_div3{
+    background: url(../images/banner3.jpg) fixed center center;
+}
+body {
+    width: 100%;
+    height:1000px;
+    background-repeat: no-repeat;
+    background-image: url("../images/banner1.jpg");
+    animation:frams 10s infinite;
+}
+
+@keyframes frams {
+    0%{
+        background-image: url("../images/banner1.jpg");background-size: 100% 100%;background-repeat: no-repeat
+    }
+    25%{
+        background-image: url("../images/banner2.jpg");background-size: 100% 100%;background-repeat: no-repeat
+    }
+    50%{
+        background-image: url("../images/banner3.jpg");background-size: 100% 100%;background-repeat: no-repeat
+    }
+    75%{
+        background-image: url("../images/banner4.jpg");background-size: 100% 100%;background-repeat: no-repeat
+    }
+    100%{
+        background-image: url("../images/banner1.jpg");background-size: 100% 100%;background-repeat: no-repeat
+    }
+}
+.layer_notice {
+    background: #5fb878 none repeat scroll 0 0;
+    float: left;
+    height: 75px;
+    overflow: hidden;
+    padding: 10px;
+    width: 330px;
+}
+.layer_notice ul li {
+    color: #fff;
+}
+.video-player {
+    background-color: transparent;
+    min-width: 100%;
+    min-height: 100%;
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+}
+
+.video_mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 90;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.login {
+    /*height: 260px;*/
+    width: 260px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -150px 0 0 -150px;
+    z-index: 99;
+}
+
+.login h1 {
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.form_code {
+    position: relative;
+}
+
+.form_code .code {
+    position: absolute;
+    right: 0;
+    top: 1px;
+    cursor: pointer;
+}
+
+.login_btn {
+    width: 100%;
+}
+.layui-form-select{
+    margin-bottom: 15px;
+}
+
+
+#login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -150px 0 0 -150px;
+    width: 300px;
+    height: 300px;
+
+}
+
+#login h1 {
+    color: #fff;
+    text-shadow: 0 0 10px;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3.5em;
+    margin: 0.4em 0;
+    transition: 3s;
+    font-family: Times New Roman;
+}
+
+input {
+    width: 278px;
+    height: 18px;
+    margin-bottom: 10px;
+    outline: none;
+    padding: 10px;
+    font-size: 13px;
+    color: #fff;
+    text-shadow: 1px 1px 1px;
+    border-top: 1px solid #312E3D;
+    border-left: 1px solid #312E3D;
+    border-right: 1px solid #312E3D;
+    border-bottom: 1px solid #56536A;
+    border-radius: 4px;
+    background-color: #2D2D3F;
+}
+
+
+.but {
+    width: 300px;
+    min-height: 20px;
+    display: block;
+    background-color: #4a77d4;
+    border: 1px solid #3762bc;
+    color: #fff;
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    transition: 1.5s;
+
+}
+
+.bu {
+    width: 300px;
+    min-height: 20px;
+    display: block;
+    background-color: #424242;
+    border: 1px solid #3762bc;
+    color: #fff;
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    transition: 1s;
+    background-color: #008080;
+
+}
+
+.bu :hover {
+    border-radius: 42%;
+    color: white;
+    background-color: #AABBCC;
+    transition: 1s;
+}
+
+.but :hover {
+    border-radius: 12%;
+    color: white;
+    background-color: #F5DEB3;
+    transition: 1.5s;
+}
+
+.link {
+
+    outline: none;
+    text-decoration: none;
+    position: relative;
+    font-size: 8em;
+    line-height: 1;
+    color: #9e9ba4;
+    display: inline-block;
+}
+
+.but:link {
+    color: #06F;
+    text-decoration: none;
+}
+
+/* 未访问的链接 */
+.but:visited {
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* 已访问的链接 */
+.but:hover {
+    color: #F00;
+    text-decoration: underline;
+}
+
+/* 鼠标移动到链接上 */
+.but:active {
+    color: #F0F;
+}
+
+/* 选定的链接 */
+.b {
+    width: 300px;
+    min-height: 20px;
+    display: block;
+    background-color: #424242;
+    border: 1px solid #3762bc;
+    color: #fff;
+    padding: 9px 14px;
+    font-size: 15px;
+    line-height: normal;
+    border-radius: 5px;
+    margin: 0;
+    transition: 1s;
+    background-color: #008080;
+
+}
+
+.b :hover {
+    border-radius: 42%;
+    color: white;
+    background-color: #F5DEB3;
+    transition: 1s;
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css" />
+    <title>学生项目管理平台登录</title>
+    <script src="../static/js/global_variable.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.0.min.js"></script>
+    <!-- <script>
+        Mock.mock(/login/, {
+            "code": 0,
+            "msg": "登录失败！",
+            "isOk": true,
+            "count": 0,
+            "data": [{
+                "id|6-7": 1,
+                "username": null,
+                "password": null,
+                "sex": null,
+                "birth": "2021-12-25",
+                "phone": null,
+                "grade": "2",
+                "major": null,
+                'name': '@cfirst@clast'
+            }]
+        })
+        Mock.mock(/register/, {
+            "code": 0,
+            "msg": "Success",
+            "isOk": false,
+            "count": 0,
+            "data": [{
+                "id|6-7": 1,
+                "username": null,
+                "password": null,
+                "sex": null,
+                "birth": "2021-12-25",
+                "phone": null,
+                "grade": "2",
+                "major": null,
+                'name': '@cfirst@clast'
+            }]
+        })
+    </script> -->
+    <script>
+        function checkType() {
+            var role = document.querySelector("select[name=role]").value;
+            var register_button = document.getElementById('register-button');
+            if (role == "student") {
+                register_button.style.display = '';
+            } else {
+                register_button.style.display = "none";
+            }
+            var form = document.getElementsByClassName('register-form')[0];
+            if (role == "student") {
+                form.action = "student/student.html";
+            } else if (role == "admin") {
+                form.action = "admin/admin.html";
+            } else if (role == "expert") {
+                form.action = "expert/expert.html";
+            } else {
+                form.action = "teacher/teacher.html";
+            }
+        }
+
+        function login() {
+            var form = document.getElementsByClassName('register-form')[0];
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open("POST", localhost + "/login", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    json = JSON.parse(xhr.responseText);
+                    if (json.isOk == true) {
+                        window.location.href = form.action;
+                    } else
+                        alert(json.msg);
+                }
+            }
+            console.log($(form).serialize());
+            xhr.send($(form).serialize());
+        }
+
+        function register() {
+            var form = document.getElementsByClassName('register-form')[0];
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open("POST", localhost + "/register", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function() {
+                if (xhr.status == 200) {
+                    json = JSON.parse(xhr.responseText);
+                    if (json.isOk == true) {
+                        alert("注册成功！");
+                    } else
+                        alert(json.msg);
+                }
+            }
+            xhr.send($(form).serialize());
+        }
+    </script>
+</head>
+
+<body>
+<div id="login">
+    <h1>Login</h1>
+    <form onsubmit="return false" method="post" class="register-form" action="student/student.html">
+
+        <input type="text" placeholder="请输入通行证账号，6—16位字符" name="userId">
+        <input type="password" placeholder="请设置8-64位密码，区分大小写" name="password">
+        <select name="role" class="bu" onchange="checkType();">
+            <option value="student">学生</option>
+            <option value="admin">管理员</option>
+            <option value="expert">评审导师</option>
+            <option value="teacher">指导导师</option>
+        </select>
+        <br />
+        <button class="but" type="submit" id="login-button" onclick="login()">登录</button>
+        <br>
+        <button class="but" type="submit" id="register-button" onclick="register()">注册</button>
+    </form>
+</div>
+</body>
+
+</html>

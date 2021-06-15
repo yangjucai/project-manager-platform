@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>双创项目信息管理系统</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/project.css">
+    <link rel="shortcut icon" href="../../static/images/jcohy.png" type="image/x-icon">
+    <!-- layui.css -->
+    <link href="../../static/js/plugins/layui/css/layui.css" rel="stylesheet" />
+    <!-- font-awesome.css -->
+    <link href="../../static/css/font-awesome.css" rel="stylesheet" />
+    <!-- animate.css -->
+    <link href="../../static/css/animate.min.css" rel="stylesheet" />
+    <!-- 本页样式 -->
+    <link href="../../static/css/main.css" rel="stylesheet" />
+
+
+    <title>学生项目管理</title>
+    <!-- <script src="http://mockjs.com/dist/mock.js"></script> -->
+    <script src="../../static/js/global_variable.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.1.0.min.js"></script>
+    <!--  <script>-->
+    <!--    Mock.mock(/info/, {-->
+    <!--      "code": 0,-->
+    <!--      "msg": "Success",-->
+    <!--      "count": 0,-->
+    <!--      "data": [{-->
+    <!--        "id|6-7": 1,-->
+    <!--        "username": null,-->
+    <!--        "password": null,-->
+    <!--        "sex": null,-->
+    <!--        "birth": "2021-12-25",-->
+    <!--        "phone": null,-->
+    <!--        "grade": "2",-->
+    <!--        "major": null,-->
+    <!--        'name': '@cfirst@clast'-->
+    <!--      }]-->
+    <!--    })-->
+    <!--    Mock.mock(/list/, {-->
+    <!--      "code": 0,-->
+    <!--      "msg": "Success",-->
+    <!--      "count": 0,-->
+    <!--      "data|3-10": [{-->
+    <!--        "id|100000-999999": 1,-->
+    <!--        "name": "污水处理管理",-->
+    <!--        "type|1": ["双创", "科创", "创新创业"],-->
+    <!--        "grades|40-100": 1,-->
+    <!--        "status|1": ["正在审核", "等待指导导师确认", "正在中期答辩"],-->
+    <!--        "teacher_comment": "good",-->
+    <!--        "expert_comment": "pass"-->
+    <!--      }]-->
+    <!--    })-->
+    <!--    Mock.mock(/project/, {-->
+    <!--      "code": 0,-->
+    <!--      "msg": "Success",-->
+    <!--      "count": 0,-->
+    <!--      "data": [{-->
+    <!--        "id|100000-999999": 1,-->
+    <!--        "name": "污水处理管理",-->
+    <!--        "type|1": ["双创", "科创", "创新创业"],-->
+    <!--        "grades|40-100": 1,-->
+    <!--        "status|1": ["正在审核", "等待指导导师确认", "正在中期答辩"],-->
+    <!--        "teacher_comment": "good",-->
+    <!--        "expert_comment": "pass"-->
+    <!--      }]-->
+    <!--    })-->
+    <!--  </script>-->
+
+    <script>
+        function getStudentName() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", localhost + "/admin/info", true);
+
+            xhttp.withCredentials = true;
+            xhttp.onload = function() {
+                var student_info = JSON.parse(xhttp.responseText).data[0];
+                console.log(student_info);
+                var name = document.querySelectorAll("span[title=student_name]");
+                name[0].innerHTML = student_info.adm_name;
+            }
+            xhttp.send();
+        }
+
+        function createProjectTable() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", localhost + "/admin/project/list", true);
+            xhttp.withCredentials = true;
+            xhttp.onload = function() {
+                var projects = JSON.parse(xhttp.responseText).data;
+                //console.log(projects);
+                var table = document.getElementById("project-table");
+                var tableBody = "";
+                var del = '<a class="delete-button" href="#" onclick="deleteProject(this)">删除项目</a>';
+                for (const project of projects) {
+                    //console.log(project);
+                    var edit = '<a class="edit-button" href=' + '"proUpdate.html?projectId=' + project.pro_id + '"' +
+                        ' target="_blank"' +
+                        '>修改项目</a>';
+                    tableBody += "<tr>";
+                    tableBody += "<td>" + project.pro_id + "</td>";
+                    tableBody += "<td>" + project.type + "</td>";
+                    tableBody += "<td>" + project.status + "</td>";
+                    tableBody += "<td>" + project.pro_name + " </td>";
+                    tableBody += "<td>" + edit + " " + del + "</td>";
+                    tableBody += "</tr>";
+                }
+                table.innerHTML += tableBody;
+            }
+            xhttp.send();
+
+        }
+
+        function deleteProject(obj) {
+            //console.log(obj.parentNode.parentNode.firstChild.innerHTML);
+            if (confirm("您确定要删除此项目吗？") == true) {
+                $.post(localhost + "/admin/project/delete", {
+                        projectId: obj.parentNode.parentNode.firstChild.innerHTML
+                    },
+                    function(data, status) {
+                        if (data.isOk == true) {
+                            alert("项目已删除");
+                            window.location.reload();
+                        } else {
+                            alert(data.msg);
+                        }
+                    });
+            }
+
+        }
+
+        function logout() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+            xhr.open("GET", localhost + "/logout", true);
+            xhr.onload = function() {
+                if (xhr.status == 200)
+                    window.location.href = "../login.html";
+            }
+            xhr.send();
+        }
+    </script>
+
+
+
+</head>
+
+<body onload="getStudentName();createProjectTable();">
+    <div class="layui-layout layui-layout-admin">
+        <div id="info-container">
+            <!--顶部-->
+            <div class="layui-header">
+                <div class="ht-console">
+                    <div class="ht-user">
+                        <img src="../../static/images/jcohy.png" />
+                        <!--                <a class="ht-user-name">我叫学生</a>-->
+                        <br>
+                        <p style="color:whitesmoke">&nbsp &nbsp &nbsp <span title="student_name">test</span></p>
+                    </div>
+                </div>
+                <span class="sys-title">项目信息管理系统</span>
+                <ul class="ht-nav">
+                    <li class="ht-nav-item">
+                        <!--                <a id="updatePassword"><i class="fa fa-power-off fa-fw"></i>修改密码</a>-->
+                        <!--                <input type="hidden" value="1306" id="num">-->
+                        <!--                <input type="hidden" value="student" id="role">-->
+                        <!--                <input type="hidden" value="11" id="size">-->
+                        <!--                <input type="hidden" value="../notice/list" id="url">-->
+
+                        <a href="info.html" target="_blank">个人信息</a>
+
+                    </li>
+                    <li class="ht-nav-item">
+                        <!--                <a href="../logout"><i class="fa fa-power-off fa-fw"></i>注销</a>-->
+                        <a href="#" onclick="logout()">退出</a>
+                    </li>
+                </ul>
+            </div>
+            <!--侧边导航-->
+            <div class="layui-side">
+                <div class="layui-side-scroll">
+                    <ul class="layui-nav layui-nav-tree" lay-filter="leftnav">
+                        <li class="layui-nav-item layui-this">
+                            <a href="javascript:;"><i class="fa fa-home"></i>项目管理</a>
+                            <dl class="layui-nav-child">
+                                <!--                        <dd><a href="javascript:;" data-url="../student/index" data-id="1">我的项目</a></dd>-->
+                                <!--                        <dd><a href="javascript:;" data-url="../student/form" data-id="2">项目申报</a></dd>-->
+                                <p align="center"><a class="create-button" href="admin.html">项目信息</a>
+                                    <p align="center"><a class="create-button" href="proUpdate.html" target="_blank">新建项目</a>
+
+                                    </p>
+                                    <!-- <p align="center"><a class="create-button" href="update.html" >修改项目</a></p> -->
+                                    <!--                        <dd><a href="javascript:;" data-url="../project/history" data-id="3">往年项目查看</a></dd>-->
+                            </dl>
+                        </li>
+
+
+
+                        <li class="layui-nav-item">
+                            <a href="javascript:;"><i class="fa fa-user"></i>学生管理</a>
+                            <dl class="layui-nav-child">
+                                <p align="center"><a class="create-button" href="stuinfo.html">学生信息</a></p>
+                                <p align="center"><a class="create-button" href="stuUpdate.html" target="_blank">新建学生</a>
+                            </dl>
+                        </li>
+
+
+                        <li class="layui-nav-item">
+                            <a href="javascript:;"><i class="fa fa-user"></i>教师管理</a>
+                            <dl class="layui-nav-child">
+                                <p align="center"><a class="create-button" href="teainfo.html">教师信息</a></p>
+                                <p align="center"><a class="create-button" href="teaUpdate.html" target="_blank">新建教师</a>
+                            </dl>
+                        </li>
+
+                        <li class="layui-nav-item">
+                            <a href="javascript:;"><i class="fa fa-user"></i>专家管理</a>
+                            <dl class="layui-nav-child">
+                                <p align="center"><a class="create-button" href="expinfo.html">专家信息</a></p>
+                                <p align="center"><a class="create-button" href="expUpdate.html" target="_blank">新建专家</a>
+                            </dl>
+                        </li>
+
+
+
+                        <!--                    <li class="layui-nav-item">-->
+                        <!--                        <a href="javascript:;"><i class="fa fa-comment"></i>我的消息</a>-->
+                        <!--                        <dl class="layui-nav-child">-->
+                        <!--                            <dd><a href="javascript:;" data-url="../student/notice" data-id="4">我的消息</a></dd>-->
+                        <!--                        </dl>-->
+                        <!--                    </li>-->
+                    </ul>
+                </div>
+            </div>
+            <!--收起导航-->
+            <div class="layui-side-hide layui-bg-cyan">
+                <i class="fa fa-long-arrow-left fa-fw"></i>收起导航
+            </div>
+            <!--主体内容-->
+            <div class="layui-body">
+                <div style="margin:0;position:absolute;top:15px;bottom:0px;width:100%;" class="layui-tab layui-tab-brief" lay-filter="tab" lay-allowclose="true">
+                    <!--            <ul class="layui-tab-title">-->
+                    <!--                <li lay-id="0" class="layui-this">首页</li>-->
+                    <!--            </ul>-->
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            <!--                    <p style="padding: 10px 15px; margin-bottom: 20px; margin-top: 10px; border:1px solid #ddd;display:inline-block;">-->
+                            <!--                        双创项目信息管理系统-->
+                            <!--                        <span style="padding-left:1em;">用户帐号：1306</span>-->
+                            <!--                        <span style="padding-left:1em;">用户姓名：我叫学生</span>-->
+                            <!--                        <span style="padding-left:1em;">角色：student</span>-->
+                            <!--                    </p>-->
+
+
+
+
+                            <table id="project-table">
+                                <tr>
+                                    <th>项目ID</th>
+                                    <th>项目类型</th>
+                                    <th>项目状态</th>
+                                    <th>项目名称</th>
+                                    <th>项目管理</th>
+
+                                </tr>
+                            </table>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <!--底部信息-->
+            <div class="layui-footer">
+                <p style="line-height:44px;text-align:center;">华东师范大学 © 2021 - 项目信息管理平台</p>
+            </div>
+
+            <script src="../../static/js/plugins/layui/layui.js"></script>
+
+            <!-- layui规范化用法 -->
+            <script type="text/javascript">
+                layui.config({
+                    base: '../../static/js/'
+                }).use('student/main');
+            </script>
+</body>
+
+</html>
